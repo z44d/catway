@@ -58,16 +58,19 @@ class MailData(Parser):
     def __init__(
             self,
             content: str = None,
-            type: str = None
+            type: str = None,
+            html: str = None
         ):
             self.content = content
             self.type = type
+            self.html = html
 
     @staticmethod
     def from_json(_d: Dict) -> "MailData":
         return MailData(
             content=_d.get("content"),
-            type=_d.get("type")
+            type=_d.get("type"),
+            html=_d.get("textAsHtml")
         )
 
 class Mail(Parser):
@@ -120,6 +123,6 @@ class FullMail(Parser):
     @staticmethod
     def from_json(_d: Dict) -> "FullMail":
         return FullMail(
-            mail_data=[Mail.from_json(i) for i in _d.get("mailData")],
+            mail_data=[Mail.from_json(i) for i in _d.get("mailData")] if _d.get("mailData") else None,
             message=_d.get("message")
         )
