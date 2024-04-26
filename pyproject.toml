@@ -1,0 +1,23 @@
+[project]
+name = "catdns"
+version = "1.0.1"
+authors = [
+  { name="ZAID", email="y8838@hotmail.com" },
+]
+description = "Create tempmail based on https://catdns.in :D"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "aiohttp",
+  "asyncio",
+  "requests"
+]
+
+[project.urls]
+Homepage = "https://github.com/zaid5o5/catdns"
+Issues = "https://github.com/zaid5o5/catdns/issues"
