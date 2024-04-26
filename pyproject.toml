@@ -1,6 +1,6 @@
 [project]
 name = "catdns"
-version = "1.0.1"
+version = "2.0"
 authors = [
   { name="ZAID", email="y8838@hotmail.com" },
 ]
