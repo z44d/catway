@@ -24,6 +24,7 @@ class CatMail:
         for i in result["data"]["mails"]:
             if limit is not None and count == limit:
                 return
+            count += 1
             yield Mail.from_json(i)
 
     async def get_inbox(self, id: str, timeout: int = None) -> "MailBox":
