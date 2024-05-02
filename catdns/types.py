@@ -1,128 +1,115 @@
-from json import dumps
-from typing import List, Dict
+from pydantic import BaseModel
+from datetime import datetime
+from typing_extensions import TypedDict
 
-class Parser:
-    def __init__(self):
-        pass
+from .utils import convert_to_datetime, convert_to_str
+
+class Object(BaseModel):
+    def __str__(self: "Object"):
+        return self.model_dump_json(indent=4)
+
+class MailDict(TypedDict):
+    id: "str"
+    senderEmail: "str"
+    senderName: "str"
+    subject: "str"
+    createdAt: "str"
+    updatedAt: "str"
+    expireAt: "str"
+
+class Mail(Object):
+    id: str
+    sender_email: "str"
+    sender_name: "str"
+    subject: "str"
+    created_at: "datetime"
+    updated_at: "datetime"
+    expire_at: "datetime"
 
     @staticmethod
-    def default(obj: "Parser"):
-        if isinstance(obj, bytes):
-            return repr(obj)
+    def from_json(_d: "MailDict") -> "Mail":
+        to_parse = {
+            "id": _d.get("id"),
+            "sender_email": _d.get("senderEmail"),
+            "sender_name": _d.get("senderName"),
+            "subject": _d.get("subject"),
+            "created_at": convert_to_datetime(_d.get("createdAt")),
+            "updated_at": convert_to_datetime(_d.get("updatedAt")),
+            "expire_at": convert_to_datetime(_d.get("expireAt"))
+        }
+        return Mail(**to_parse)
 
+    @property
+    def view_link(self) -> "str":
+        return "https://mail.catway.org/inbox/{id}".format(id=self.id)
+
+    @property
+    def raw(self) -> "MailDict":
         return {
-            **{
-                attr: (
-                    getattr(obj, attr)
-                )
-                for attr in filter(lambda x: not x.startswith("_"), obj.__dict__)
-                if getattr(obj, attr) is not None
-            }
+            "id": self.id,
+            "senderEmail": self.sender_email,
+            "senderName": self.sender_name,
+            "subject": self.subject,
+            "createdAt": convert_to_str(self.created_at),
+            "updatedAt": convert_to_str(self.updated_at),
+            "expireAt": convert_to_str(self.expire_at)
         }
 
-    def __str__(self) -> str:
-        return dumps(self, indent=4, default=Parser.default, ensure_ascii=False)
+class MailBoxDict(TypedDict):
+    id: str
+    html: str
+    content: str
+    senderEmail: "str"
+    senderName: "str"
+    subject: "str"
+    createdAt: "str"
+    updatedAt: "str"
+    expireAt: "str"
+    mailboxOwner: "str"
 
-    def __eq__(self, other: "Parser") -> bool:
-        for attr in self.__dict__:
-            try:
-                if attr.startswith("_"):
-                    continue
-
-                if getattr(self, attr) != getattr(other, attr):
-                    return False
-            except AttributeError:
-                return False
-
-        return True
-
-    def __repr__(self) -> str:
-        return "".format(
-            self.__class__.__name__,
-            ", ".join(
-                f"{attr}={repr(getattr(self, attr))}"
-                for attr in filter(lambda x: not x.startswith("_"), self.__dict__)
-                if getattr(self, attr) is not None
-            )
-        )
-
-    def __setstate__(self, state):
-        self.__dict__ = state
-
-    def __getstate__(self):
-        state = self.__dict__.copy()
-
-        return state
-
-class MailData(Parser):
-    def __init__(
-            self,
-            content: str = None,
-            type: str = None,
-            html: str = None
-        ):
-            self.content = content
-            self.type = type
-            self.html = html
+class MailBox(Object):
+    id: "str"
+    html: "str"
+    content: "str"
+    sender_email: "str"
+    sender_name: "str"
+    subject: "str"
+    created_at: "datetime"
+    updated_at: "datetime"
+    expire_at: "datetime"
+    owner: "str"
 
     @staticmethod
-    def from_json(_d: Dict) -> "MailData":
-        return MailData(
-            content=_d.get("content"),
-            type=_d.get("type"),
-            html=_d.get("textAsHtml")
-        )
+    def from_json(_d: "MailBoxDict") -> "MailBox":
+        to_parse = {
+            "id": _d.get("id"),
+            "html": _d.get("html"),
+            "content": _d.get("content"),
+            "sender_email": _d.get("senderEmail"),
+            "sender_name": _d.get("senderName"),
+            "subject": _d.get("subject"),
+            "created_at": convert_to_datetime(_d.get("createdAt")),
+            "updated_at": convert_to_datetime(_d.get("updatedAt")),
+            "expire_at": convert_to_datetime(_d.get("expireAt")),
+            "owner": _d.get("mailboxOwner"),
+        }
+        return MailBox(**to_parse)
 
-class Mail(Parser):
-    def __init__(
-        self,
-        data: "MailData" = None,
-        date: str = None,
-        sent_from: "MailFrom" = None,
-        subject: str = None
-    ):
-        self.data = data
-        self.date = date
-        self.sent_from = sent_from
-        self.subject = subject
+    @property
+    def view_link(self) -> "str":
+        return "https://mail.catway.org/inbox/{id}".format(id=self.id)
 
-    @staticmethod
-    def from_json(_d: Dict) -> "Mail":
-        return Mail(
-            data=MailData.from_json(_d.get("data")),
-            date=_d.get("date"),
-            sent_from=MailFrom.from_json(_d.get("sentFrom")),
-            subject=_d.get("subject")
-        )
-
-class MailFrom(Parser):
-    def __init__(
-        self,
-        email: str = None,
-        user: str = None
-    ):
-        self.email = email
-        self.user = user
-
-    @staticmethod
-    def from_json(_d: Dict) -> "MailFrom":
-        return MailFrom(
-            email=_d.get("email"),
-            user=_d.get("user")
-        )
-
-class FullMail(Parser):
-    def __init__(
-            self,
-            mail_data: List["Mail"] = None,
-            message: str = None
-        ):
-            self.mail_data = mail_data
-            self.message = message
-
-    @staticmethod
-    def from_json(_d: Dict) -> "FullMail":
-        return FullMail(
-            mail_data=[Mail.from_json(i) for i in _d.get("mailData")] if _d.get("mailData") else None,
-            message=_d.get("message")
-        )
+    @property
+    def raw(self) -> "MailBoxDict":
+        return {
+            "id": self.id,
+            "html": self.html,
+            "content": self.content,
+            "senderEmail": self.sender_email,
+            "senderName": self.sender_name,
+            "subject": self.subject,
+            "createdAt": convert_to_str(self.created_at),
+            "updatedAt": convert_to_str(self.updated_at),
+            "expireAt": convert_to_str(self.expire_at),
+            "mailboxOwner": self.owner
+        }

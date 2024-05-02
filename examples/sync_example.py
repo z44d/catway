@@ -1,9 +1,9 @@
-from catdns import get_inbox
+from catdns import CatMail
 
-inbox = get_inbox("test1@catdns.in")
+def main():
+    with CatMail("sadf@catway.org") as email:
+        for mail in email.get_inboxes():
+            print(mail)
+            print(email.get_inbox(mail.id))
 
-print(inbox.message)
-
-for i in inbox.mail_data:
-    print(i.sent_from)
-    print(i.subject)
+main()

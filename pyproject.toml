@@ -1,10 +1,10 @@
 [project]
 name = "catdns"
-version = "2.0"
+version = "2.1"
 authors = [
   { name="ZAID", email="y8838@hotmail.com" },
 ]
-description = "Create tempmail based on https://catdns.in :D"
+description = "Create tempmail based on https://mail.catway.org :D"
 readme = "README.md"
 requires-python = ">=3.6"
 classifiers = [
@@ -15,7 +15,8 @@ classifiers = [
 dependencies = [
   "aiohttp",
   "asyncio",
-  "requests"
+  "requests",
+  "pydantic"
 ]
 
 [project.urls]

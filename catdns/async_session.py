@@ -2,8 +2,6 @@ import aiohttp
 import ssl
 import certifi
 
-API_URL = "https://email.catdns.in/api"
-
 class SessionManager:
     def __init__(self) -> None:
         self.session = None
@@ -34,12 +32,11 @@ class SessionManager:
 
 session_manager = SessionManager()
 
-async def process_request(method: str, data: dict, timeout: int = 60, url: str = API_URL) -> dict:
+async def process_request(url: str, timeout: int = 60,) -> dict:
     session = await session_manager.get_session()
     async with session.request(
-        method=method,
+        method="get",
         url=url,
-        json=data,
         timeout=aiohttp.ClientTimeout(total=timeout),
     ) as response:
         return await response.json()

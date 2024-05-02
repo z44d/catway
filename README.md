@@ -4,13 +4,17 @@ pip install -U catdns
 ```
 
 # How to use :
-- 1 - Send email to your custom email, for example: ``test1@catdns.in``
+- 1 - Send email to your custom email, for example: ``sadf@catway.org``
 - 2 - Get inbox:
 
 ```python
-from catdns import get_inbox
+from catdns import CatMail
 
-inbox = get_inbox("test1@catdns.in")
+def main():
+    with CatMail("sadf@catway.org") as email:
+        for mail in email.get_inboxes():
+            print(mail)
+            print(email.get_inbox(mail.id))
 
-print(inbox)
+main()
 ```

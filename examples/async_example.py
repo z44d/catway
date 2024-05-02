@@ -1,13 +1,10 @@
-from catdns.asyncio import get_inbox
+import asyncio
+from catdns.asyncio import CatMail
 
 async def main():
-    inbox = await get_inbox("test1@catdns.in")
+    async with CatMail("sadf@catway.org") as email:
+        async for mail in email.get_inboxes():
+            print(mail)
+            print(await email.get_inbox(mail.id))
 
-    print(inbox.message)
-
-    for i in inbox.mail_data:
-        print(i.sent_from)
-        print(i.subject)
-
-import asyncio
-asyncio.get_event_loop().run_until_complete(main())
+asyncio.run(main())

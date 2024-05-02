@@ -7,8 +7,6 @@ SESSION_TIME_TO_LIVE = 600
 
 session = None
 
-API_URL = "https://email.catdns.in/api"
-
 
 def per_thread(key, construct_value, reset=False):
     """
@@ -38,11 +36,10 @@ def _get_req_session(reset=False):
         # Session lives some time or forever once created. Default
         return per_thread('req_session', lambda: session if session else requests.sessions.Session(), reset)
 
-def make_request(method: str, data: dict, url: str = API_URL, timeout: int = 60) -> dict:
+def make_request(url: str, timeout: int = 60) -> dict:
     result = _get_req_session().request(
-        method=method,
+        method="get",
         url=url,
-        json=data,
         timeout=timeout
     )
     return result.json()
