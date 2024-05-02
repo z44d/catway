@@ -1,6 +1,6 @@
 # Install :
 ```commandline
-pip install -U catdns
+pip install -U catway
 ```
 
 # How to use :
