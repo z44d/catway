@@ -8,7 +8,7 @@ pip install -U catdns
 - 2 - Get inbox:
 
 ```python
-from catdns import CatMail
+from catway import CatMail
 
 def main():
     with CatMail("sadf@catway.org") as email:
