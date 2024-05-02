@@ -1,6 +1,6 @@
 [project]
-name = "catdns"
-version = "2.1"
+name = "catway"
+version = "1.0"
 authors = [
   { name="ZAID", email="y8838@hotmail.com" },
 ]
@@ -20,5 +20,5 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/zaid5o5/catdns"
-Issues = "https://github.com/zaid5o5/catdns/issues"
+Homepage = "https://github.com/zaid5o5/catway"
+Issues = "https://github.com/zaid5o5/catway/issues"

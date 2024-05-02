@@ -1,4 +1,4 @@
-__version__ = "2.1"
+__version__ = "1.0"
 
 from .session import make_request
 from .types import Mail, MailBox
