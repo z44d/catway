@@ -1,5 +1,5 @@
 import asyncio
-from catdns.asyncio import CatMail
+from catway.asyncio import CatMail
 
 async def main():
     async with CatMail("sadf@catway.org") as email:
