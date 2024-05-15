@@ -1,12 +1,8 @@
-from pydantic import BaseModel
+from dataclasses import dataclass
 from datetime import datetime
-from typing_extensions import TypedDict
+from typing import TypedDict
 
 from .utils import convert_to_datetime, convert_to_str
-
-class Object(BaseModel):
-    def __str__(self: "Object"):
-        return self.model_dump_json(indent=4)
 
 class MailDict(TypedDict):
     id: "str"
@@ -17,7 +13,8 @@ class MailDict(TypedDict):
     updatedAt: "str"
     expireAt: "str"
 
-class Mail(Object):
+@dataclass(repr=True)
+class Mail:
     id: str
     sender_email: "str"
     sender_name: "str"
@@ -67,7 +64,8 @@ class MailBoxDict(TypedDict):
     expireAt: "str"
     mailboxOwner: "str"
 
-class MailBox(Object):
+@dataclass(repr=True)
+class MailBox:
     id: "str"
     html: "str"
     content: "str"

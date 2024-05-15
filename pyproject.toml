@@ -1,12 +1,12 @@
 [project]
 name = "catway"
-version = "1.0"
+version = "1.1"
 authors = [
   { name="ZAID", email="y8838@hotmail.com" },
 ]
 description = "Create tempmail based on https://mail.catway.org :D"
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -16,7 +16,6 @@ dependencies = [
   "aiohttp",
   "asyncio",
   "requests",
-  "pydantic"
 ]
 
 [project.urls]

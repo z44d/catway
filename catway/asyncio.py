@@ -4,6 +4,8 @@ from .utils import ApiExeption
 
 from typing import AsyncGenerator, Any
 
+__all__ = ["CatMail"]
+
 class CatMail:
     def __init__(self, email: str) -> None:
         """

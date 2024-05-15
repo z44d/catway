@@ -6,6 +6,8 @@ from .utils import ApiExeption
 
 from typing import List
 
+__all__ = ["CatMail"]
+
 class CatMail:
     def __init__(self, email: str) -> None:
         """
